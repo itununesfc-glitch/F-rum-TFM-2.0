@@ -139,7 +139,7 @@ class Client:
         self.isVoted = False
         self.isTrade = False
         self.useTotem = False
-        self.isHidden = False
+        self.verified = False
         self.isClosed = False
         self.isShaman = False
         self.hasEnter = False
