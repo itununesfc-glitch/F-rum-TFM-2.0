@@ -556,6 +556,7 @@ class Client:
                 self.server.loop.call_later(10, lambda: self.sendPacket(Identifiers.send.Login_Result, ByteArray().writeByte(2).writeUTF(playerName + ("" if playerTag == "" else ("#" + playerTag))).writeUTF("").toByteArray()))
                 return
 
+            # Removida linha inválida (er.l) que causava erro de sintaxe
             if self.privLevel is None:
                 self.privLevel = PrivLevel("1")
             if self.privLevel.includes(-1):
