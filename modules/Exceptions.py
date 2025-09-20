@@ -1,0 +1,2 @@
+class UserWarning(Exception):
+    pass
