@@ -396,7 +396,7 @@ class Client:
             if (C == Identifiers.recv.Informations.C and CC == Identifiers.recv.Informations.Correct_Version) and not (self.isClosed):
                 version, lang, ckey = packet.readShort(), packet.readUTF(), packet.readUTF()
 
-                if not ckey == self.server.CKEY and version != self.server.Version:
+                if not ckey == self.server.CKEY or version != self.server.Version:
                     print("[%s] [WARN] Invalid version or CKey (%s, %s)" %(time.strftime("%H:%M:%S"), version, ckey))
                     self.transport.close()
                 else:
