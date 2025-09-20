@@ -33,6 +33,13 @@ loop = asyncio.get_event_loop()
 from datetime import datetime, timedelta
 from importlib import reload
 
+# Placeholders for DB cursors used by Client/Server during runtime. These
+# are normally set later when the database is initialized. Defining them now
+# prevents NameError when instantiating Server for testing.
+Cursor = None
+CursorCafe = None
+CursorMaps = None
+
 class Client:
     def __init__(self, _server):
 
@@ -252,13 +259,33 @@ class Client:
         if data == b'<policy-file-request/>\x00':
             self.transport.write(b'<cross-domain-policy><allow-access-from domain="*" to-ports="*"/></cross-domain-policy>\x00')
             return
-        self.transport.close()
-            
-        for i in range(5):
-            if not data[i] & 128:
-                break
-        
-        asyncio.ensure_future(self.parseString(ByteArray(data[i + 1:])))
+        # Don't close the transport immediately; parse the incoming length/packet
+        # The original code closed the connection unconditionally which caused
+        # immediate disconnects during handshake. Read varint length prefix
+        # then schedule parseString with the remaining bytes.
+        try:
+            # find the varint end (max 5 bytes)
+            i = 0
+            while i < min(5, len(data)) and (data[i] & 128):
+                i += 1
+            # include the last byte
+            i = i if i >= len(data) else i
+            # The packet data expected by parseString starts after the varint
+            start = i + 1
+            if start <= len(data):
+                asyncio.ensure_future(self.parseString(ByteArray(data[start:])))
+            else:
+                # not enough data yet; ignore (this will wait for next call)
+                return
+        except Exception:
+            # Fallback: attempt to parse full payload
+            try:
+                asyncio.ensure_future(self.parseString(ByteArray(data)))
+            except Exception:
+                # Log and close if parsing fails repeatedly
+                with open("./include/SErros.log", "a") as f:
+                    traceback.print_exc(file=f)
+                self.transport.close()
 
     def eof_received(self):
         pass
@@ -283,13 +310,18 @@ class Client:
         self.missions = Missions(self, self.server)
 
         if self.ipAddress != "127.0.0.1":
-            r = urllib.request.urlopen(f"https://freegeoip.app/json/{self.ipAddress}")
-            d = json.loads(r.read())
-            r.close()
-            self.realCountry = d["country_code"]
-            self.realCity = d["city"]
+            try:
+                # try to get geolocation but don't block startup if external service fails
+                r = urllib.request.urlopen(f"https://freegeoip.app/json/{self.ipAddress}", timeout=2)
+                d = json.loads(r.read())
+                r.close()
+                self.realCountry = d.get("country_code", "XX")
+                self.realCity = d.get("city", "")
+            except Exception:
+                # fallback to unknown locale
+                self.realCountry = "XX"
+                self.realCity = ""
         else:
-            pass
             self.realCountry = "XX"
             self.realCity = "Localhost"
         

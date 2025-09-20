@@ -1,0 +1,2 @@
+discord-webhook==0.7.0
+pymysql==1.0.3

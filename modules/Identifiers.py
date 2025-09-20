@@ -1,3 +1,31 @@
+"""Minimal Identifiers stub for local testing.
+
+This provides the attributes used by MainServer during early startup and
+handshake parsing so we can instantiate Server without importing the full
+original Identifiers module.
+"""
+class _RecvInformations:
+    C = 1
+    Correct_Version = 1
+
+class _Send:
+    # Define some commonly used send identifiers as tuples/lists
+    Login_Result = (1, 2)
+    Time_Stamp = (1, 3)
+
+class _OldSend:
+    Player_Ban_Login = (1, 4)
+    Anchors = (2, 1)
+    Catch_The_Cheese_Map = (3, 1)
+
+
+class Identifiers:
+    recv = type('R', (), {'Informations': _RecvInformations})
+    send = _Send()
+    old = type('O', (), {'send': _OldSend()})
+
+# Export the Identifiers symbol to match `from modules.Identifiers import Identifiers`
+__all__ = ['Identifiers']
 class Identifiers:
     class recv:
         class Old_Protocol:
