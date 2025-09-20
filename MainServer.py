@@ -7,6 +7,7 @@ sys.dont_write_bytecode = True
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
 
 import modules as module
+from modules.Missions import Missions
 from modules.Others import Others
 
 # Imports Components
@@ -277,8 +278,9 @@ class Client:
         self.parsePackets = ParsePackets(self, self.server)
         from modules.ParseCommands import ParseCommands
         self.parseCommands = ParseCommands(self, self.server)
+
         self.others = Others(self)
-        self.missions = module.Missions(self, self.server)
+        self.missions = Missions(self, self.server)
 
         if self.ipAddress != "127.0.0.1":
             r = urllib.request.urlopen(f"https://freegeoip.app/json/{self.ipAddress}")
