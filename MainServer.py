@@ -41,417 +41,29 @@ CursorCafe = None
 CursorMaps = None
 
 class Client:
-    def __init__(self, _server):
 
-        # String
-        self.langue = ""
-        self.langueCode = "EN"  # Valor padrão para evitar erro de atributo
-        self.loop = loop
-        self.packages = ByteArray()
-        self.roomName = ""
-        self.marriage = ""
-        self.shopItems = ""
-        self.tribeName = ""
-        self.mouseName = ""
-        self.nameColor = ""
-        self.tradeName = ""
-        self.playerName = ""
-        self.playerTag = ""
-        self.cacheTag = ""
-        self.lastNpc = ""
-        self.shamanItems = ""
-        self.lastMessage = ""
-        self.tribeMessage = ""
-        self.tribeRanks = ""
-        self.tempMouseColor = ""
-        self.silenceMessage = ""
-        self.afkkilltimer = None
-        self.currentCaptcha = ""
-        self.mouseColor = "78583a"
-        self.shamanColor = "95d9d6"
-        self.profileColor = ""
-        self.playerLook = "1;0,0,0,0,0,0,0,0,0"
-        self.shamanLook = "0,0,0,0,0,0,0,0,0,0"
-        self.realCountry = ""
-        self.modoPwetLanguage = "ALL"
-
-        # Integer
-        self.pet = 0
-        self.posX = 0
-        self.posY = 0
-        self.velX = 0
-        self.velY = 0
-        self.fur = 0
-        self.furEnd = 0
-        self.gender = 0
-        self.verifed = False
-        self.petEnd = 0
-        self.lastOn = 0
-        self.regDate = 0
-        self.langueID = 0
-        self.playerID = 0
-        self.banHours = 0
-        self.iceCount = 2
-        self.shamanExp = 0
-        self.tribeCode = 0
-        self.tribeRank = 0
-        self.tribeChat = 0
-        self.loginTime = 0
-        self.hazelnuts = 0
-        self.playTime = 0
-        self.tribulleID = 0
-        self.titleStars = 0
-        self.firstCount = 0
-        self.playerCode = 0
-        self.shamanType = 0
-        self.tribeHouse = 0
-        self.tribeJoined = 0
-        self.playerKarma = 0
-        self.lastTopicID = 0
-        self.silenceType = 0
-        self.vipTime = 0
-        self.playerScore = 0
-        self.titleNumber = 0
-        self.cheeseCount = 0
-        self.colorProfileCC = 0
-        self.shopFraises = 0
-        self.shamanSaves = 0
-        self.shamanLevel = 1
-        self.lastGameMode = 0
-        self.bubblesCount = 0
-        self.currentPlace = 0
-        self.chec = 0
-        self.survivorDeath = 0
-        self.shamanCheeses = 0
-        self.hardModeSaves = 0
-        self.bootcampCount = 0
-        self.lastReportID = 0
-        self.shopCheeses = 100
-        self.shamanExpNext = 32
-        self.ambulanceCount = 0
-        self.defilantePoints = 0
-        self.divineModeSaves = 0
-        self.equipedShamanBadge = 0
-        self.playerStartTimeMillis = 0
-        self.wrongLoginAttempts = 0
-        self.lastPacketID = random.randint(0, 99)
-        self.authKey = 0
-
-        # Bool
-        self.isAfk = False
-        self.isDead = False
-        self.isMute = False
-        self.isCafe = False
-        self.isGuest = False
-        self.isVoted = False
-        self.isTrade = False
-        self.useTotem = False
-        self.verified = False
-        self.isClosed = False
-        self.isShaman = False
-        self.hasEnter = False
-        self.isSuspect = False
-        self.isVampire = False
-        self.isLuaAdmin = False
-        self.hasCheese = False
-        self.isJumping = False
-        self.resetTotem = False
-        self.canRespawn = False
-        self.enabledLua = False
-        self.isNewPlayer = False
-        self.isEnterRoom = False
-        self.tradeConfirm = False
-        self.canSkipMusic = False
-        self.isReloadCafe = False
-        self.isMovingLeft = False
-        self.isMovingRight = False
-        self.isFacingRight = False
-        self.isOpportunist = False
-        self.qualifiedVoted = False
-        self.desintegration = False
-        self.canShamanRespawn = False
-        self.validatingVersion = False
-        self.canRedistributeSkills = False
-        self.isVip = False
-        self.canUseSpawnAll = True
-        self.LucasPro = True
-        self.canUseCafe = True
-        self.canUseTribulle = True
-        self.luaadmin = False
-        self.isTribeOpen = False
-        self.isModoPwet = False
-        self.isModoPwetNotifications = False
-
-        # Others
-        self.Cursor = Cursor
-        self.CursorCafe = CursorCafe
-        self.CMDTime = time.time()
-        self.CAPTime = time.time()
-        self.CTBTime = time.time()
-        self.CHTTime = time.time()
-        self.LOGTime = time.time()
-        self.CRTTime = time.time()
-
-        # Nonetype
-        self.room = None
-        self.awakeTimer = None
-        self.skipMusicTimer = None
-        self.resSkillsTimer = None
-        self.spawnTimer = None
-        self.vipTimer = None
-        self.privLevel = None
-        self.server = _server
-        self.lastping = False
-
-        # List
-        self.totem = [0, ""]
-        self.dailyMissions = [0, 0, 0, 0]
-        self.PInfo = [0, 0, 400]
-        self.tempTotem = [0, ""]
-        self.racingStats = [0] * 4
-        self.survivorStats = [0] * 4
-        self.defilanteStats = [0] * 3
-
-        self.voteBan = []
-        self.clothes = []
-        self.titleList = []
-        self.shopBadges = []
-        self.friendsList = []
-        self.tribeInvite = []
-        self.shamanBadges = []
-        self.ignoredsList = []
-        self.mulodromePos = []
-        self.shopTitleList = []
-        self.marriageInvite = []
-        self.firstTitleList = []
-        self.cheeseTitleList = []
-        self.shamanTitleList = []
-        self.bootcampTitleList = []
-        self.hardModeTitleList = []
-        self.equipedConsumables = []
-        self.ignoredTribeInvites = []
-        self.divineModeTitleList = []
-        self.specialTitleList = []
-        self.ignoredMarriageInvites = []
-        self.cloneData = [0, 0]
-        self.invitedTribeHouses = []
-
-        # Dict
-        self.playerSkills = {}
-        self.tradeConsumables = {}
-        self.playerMissions = {}
-        self.playerConsumables = {}
-        self.visuItems = {}
-        self.custom = []
-
-    def getnewlen(self,b):
-        var_2068 = 0
-        var_2053 = 0
-        var_176 = b
-        while var_2053 < 10:
-            var_56 = var_176.readByte() & 255
-            var_2068 = var_2068 | (var_56 & 127) << 7 * var_2053
-            var_2053 += 1
-            if not ((var_56 & 128) == 128 and var_2053 < 5):
-                return var_2068+1, var_2053
-
-    def data_received(self, data):
-        if data == b'<policy-file-request/>\x00':
-            self.transport.write(b'<cross-domain-policy><allow-access-from domain="*" to-ports="*"/></cross-domain-policy>\x00')
-            return
-        # Don't close the transport immediately; parse the incoming length/packet
-        # The original code closed the connection unconditionally which caused
-        # immediate disconnects during handshake. Read varint length prefix
-        # then schedule parseString with the remaining bytes.
-        try:
-            # find the varint end (max 5 bytes)
-            i = 0
-            while i < min(5, len(data)) and (data[i] & 128):
-                i += 1
-            # include the last byte
-            i = i if i >= len(data) else i
-            # The packet data expected by parseString starts after the varint
-            start = i + 1
-            if start <= len(data):
-                asyncio.ensure_future(self.parseString(ByteArray(data[start:])))
-            else:
-                # not enough data yet; ignore (this will wait for next call)
-                return
-        except Exception:
-            # Fallback: attempt to parse full payload
-            try:
-                asyncio.ensure_future(self.parseString(ByteArray(data)))
-            except Exception:
-                # Log and close if parsing fails repeatedly
-                with open("./include/SErros.log", "a") as f:
-                    traceback.print_exc(file=f)
-                self.transport.close()
-
-    def eof_received(self):
-        pass
-
-    def connection_made(self, transport):
+    def __init__(self, transport=None, server=None):
+        # transporte / servidor associados
         self.transport = transport
-        self.ipAddress = transport.get_extra_info("peername")[0]
+        self.server = server
 
-        self.tribulle = module.Tribulle(self, self.server)
-        self.modoPwet = ModoPwet(self, self.server)
-        self.shopPanel = ShopPanel(self, self.server)
-        from modules.ParseShop import ParseShop
-        self.parseShop = ParseShop(self, self.server)
-        from modules.ParseSkill import ParseSkill
-        self.parseSkill = ParseSkill(self, self.server)
-        from modules.ParsePackets import ParsePackets
-        self.parsePackets = ParsePackets(self, self.server)
-        from modules.ParseCommands import ParseCommands
-        self.parseCommands = ParseCommands(self, self.server)
+        # atributos defaults essenciais para evitar AttributeError durante fluxo de salas/mapChange
+        self.isHidden = False
+        self.isGuest = False
+        self.playerSkills = {}
+        self.playerTag = ""
+        self.players = {}
+        self.Cursor = None
+        self.PlayerID = None
+        self.loginTime = None
+        self.room = None
+        self.playerName = ""
+        self.playerParams = {}
+        # outros flags/containers comuns
+        self.isAdmin = False
+        self.isMod = False
 
-        self.others = Others(self)
-        self.missions = Missions(self, self.server)
-
-        if self.ipAddress != "127.0.0.1":
-            try:
-                # try to get geolocation but don't block startup if external service fails
-                r = urllib.request.urlopen(f"https://freegeoip.app/json/{self.ipAddress}", timeout=2)
-                d = json.loads(r.read())
-                r.close()
-                self.realCountry = d.get("country_code", "XX")
-                self.realCity = d.get("city", "")
-            except Exception:
-                # fallback to unknown locale
-                self.realCountry = "XX"
-                self.realCity = ""
-        else:
-            self.realCountry = "XX"
-            self.realCity = "Localhost"
-        
-        if self.realCountry in ["EN", "FR", "FR", "BR", "ES", "CN", "TR", "VK", "PL", "HU", "NL", "RO", "ID", "DE", "E2", "AR", "PH", "LT", "JP", "CH", "FI", "CZ", "SK", "HR", "BU", "LV", "HE", "IT", "ET", "AZ", "PT"]:
-            self.langueCode = self.realCountry
-        else:
-            self.langueCode = "EN"
-
-        if self.ipAddress in self.server.badIPS:
-            self.server.appendBadIP(self.ipAddress)
-
-        if self.ipAddress in self.server.connectedCounts:
-            self.server.connectedCounts[self.ipAddress] += 1
-        else:
-            self.server.connectedCounts[self.ipAddress] = 1
-
-        if self.server.connectedCounts[self.ipAddress] >= 5 or self.ipAddress in self.server.IPPermaBanCache or self.ipAddress in self.server.IPTempBanCache:
-            self.transport.close()
-
-    def connection_lost(self, args):
-        self.isClosed = True
-        if self.ipAddress in self.server.connectedCounts:
-            count = self.server.connectedCounts[self.ipAddress] - 1
-            if count <= 0:
-                del self.server.connectedCounts[self.ipAddress]
-            else:
-                self.server.connectedCounts[self.ipAddress] = count
-
-        if self.playerName in self.server.players:
-            del self.server.players[self.playerName]
-
-            if self.isTrade:
-                self.cancelTrade(self.tradeName)
-
-            if self.playerName in self.server.chatMessages:
-                self.server.chatMessages[self.playerName] = {}
-                del self.server.chatMessages[self.playerName]
-
-            for player in self.server.players.copy().values():
-                if self.playerName and player.playerName in self.friendsList and player.friendsList:
-                    player.tribulle.sendFriendDisconnected(self.playerName)
-
-            if self.tribeCode != 0:
-                self.tribulle.sendTribeMemberDisconnected()
-
-            if self.privLevel.upper(4) and self.privLevel.lower(11):
-                self.server.sendStaffMessage(4, "<ROSE>[%s][%s] <CH>%s <N>has disconnected." %(self.server.privileges["privs"][self.privLevel.uppermost()], self.langue, self.playerName), True)
-
-            self.updateDatabase()
-            
-            if self.playerName in self.server.reports:
-                if not self.server.reports[self.playerName]["status"] == "banned":
-                    self.server.reports[self.playerName]["status"] = "disconnected"
-                    self.modoPwet.updateModoPwet()
-
-        if self.room != None:
-            self.room.removeClient(self)
-
-        self.transport.close()
-
-    def sendOldPacket(self, identifiers, values):
-        self.sendPacket([1, 1], ByteArray().writeUTF(chr(1).join(map(str, ["".join(map(chr, identifiers))] + values))).toByteArray())
-
-    def sendPacket(self, identifiers, data=b""):
-        asyncio.ensure_future(self.sendData(identifiers, data))
-
-    async def sendData(self, identifiers, data=b""):
-        if self.isClosed:
-            return
-
-        if isinstance(data, list):
-            data = ByteArray().writeUTF(chr(1).join(map(str, ["".join(map(chr, identifiers))] + data))).toByteArray()
-            identifiers = [1, 1]
-
-        elif isinstance(data, int):
-            data = chr(data)
-
-        if isinstance(data, str):
-            data = data.encode()
-
-        self.lastPacketID = (self.lastPacketID + 1) % 255
-        packet = ByteArray()
-        length = len(data) + 2
-        packet2 = ByteArray()
-        calc1 = length >> 7
-        while calc1 != 0:
-            packet2.writeByte(((length & 127) | 128))
-            length = calc1
-            calc1 = calc1 >> 7
-        packet2.writeByte((length & 127))
-        packet.writeBytes(packet2.toByteArray()).writeByte(identifiers[0]).writeByte(identifiers[1]).writeBytes(data)
-        self.transport.write(packet.toByteArray())
-        
-    def sendPacketTribulle(self, code, result):
-        self.sendPacket([60, 3], ByteArray().writeShort(code).writeBytes(result).toByteArray())
-
-    async def parseString(self, packet):
-        if self.isClosed:
-            return
-
-        packetID, C, CC = packet.readByte(), packet.readByte(), packet.readByte()
-        tokens = [C, CC]
-        if not self.validatingVersion:
-            if (C == Identifiers.recv.Informations.C and CC == Identifiers.recv.Informations.Correct_Version) and not (self.isClosed):
-                version, lang, ckey = packet.readShort(), packet.readUTF(), packet.readUTF()
-
-                # Debug: log client vs server values before comparison
-                try:
-                    print("[%s] [DEBUG] Client sent version=%s ckey=%s | Server expects Version=%s CKEY=%s" % (time.strftime("%H:%M:%S"), version, ckey, getattr(self.server, 'Version', None), getattr(self.server, 'CKEY', None)))
-                except Exception:
-                    print("[%s] [DEBUG] Failed to print version/ckey debug info" % time.strftime("%H:%M:%S"))
-
-                if not ckey == self.server.CKEY or version != self.server.Version:
-                    print("[%s] [WARN] Invalid version or CKey (client: %s, %s | server: %s, %s)" %(time.strftime("%H:%M:%S"), version, ckey, getattr(self.server, 'Version', None), getattr(self.server, 'CKEY', None)))
-                    self.transport.close()
-                else:
-                    self.validatingVersion = True
-                    self.sendCorrectVersion(self.langueCode)
-            else:
-                self.transport.close()
-        else:
-            try:
-                self.lastPacketID = packetID
-                await self.parsePackets.parsePacket(packetID, C, CC, packet)
-            except:
-                with open("./include/SErros.log", "a") as f:
-                    traceback.print_exc(file=f)
-                    f.write("\n")
-                    self.server.sendStaffMessage(7, "<BL>[<R>ERROR<BL>] The player <R>%s found an error in system." %(self.playerName))
-
+    # ...existing code...
     def loginPlayer(self, playerName, password, startRoom):
         print(f"[DEBUG] Iniciando loginPlayer: playerName={playerName}, isGuest={getattr(self, 'isGuest', False)}")
         playerName = "Souris" if playerName == "" else playerName
@@ -1598,6 +1210,394 @@ class Client:
         else:
             packet.writeInt(item)
         self.room.sendAll(Identifiers.send.Anim_Zelda, packet.toByteArray())
+
+
+    def sendInventoryConsumables(self):
+        inventory = []
+        for consumable in self.playerConsumables.items():
+            if str(consumable[0]) in self.server.inventoryConsumables:
+                obj = self.server.inventoryConsumables[str(consumable[0])]
+                if not "hide" in obj:
+                    inventory.append([consumable[0], consumable[1], obj["sort"], not "blockUse" in obj, not "launchlable" in obj, obj["img"] if "img" in obj else "", self.equipedConsumables.index(consumable[0]) + 1 if consumable[0] in self.equipedConsumables else 0])
+            else:
+                inventory.append([consumable[0], consumable[1], 1, False, True, "", self.equipedConsumables.index(consumable[0]) + 1 if consumable[0] in self.equipedConsumables else 0])
+
+        data = ByteArray()
+        data.writeShort(len(inventory))
+        for consumable in inventory:
+            data.writeShort(int(consumable[0]))
+            data.writeByte(255 if int(consumable[1]) > 255 else int(consumable[1]))
+            data.writeByte(int(consumable[2]))
+            data.writeBoolean(True)
+            data.writeBoolean(bool(consumable[3]))
+            data.writeBoolean(bool(consumable[3]))
+            data.writeBoolean(not bool(consumable[3]))
+            data.writeBoolean(bool(consumable[4]))
+            data.writeBoolean(False)
+            data.writeBoolean(str(consumable[5]) != "")
+            if str(consumable[5]) != "":
+                data.writeUTF(str(consumable[5]))
+
+            data.writeByte(int(consumable[6]))
+        self.sendPacket(Identifiers.send.Inventory, data.toByteArray())
+    def updateInventoryConsumable(self, id, count):
+        self.sendPacket(Identifiers.send.Update_Inventory_Consumable, ByteArray().writeShort(id).writeByte(count).toByteArray())
+
+    def useInventoryConsumable(self, id):
+        if id in [29, 30, 2241, 2330]:
+            self.sendPacket(Identifiers.send.Use_Inventory_Consumable, ByteArray().writeInt(self.playerCode).writeShort(id).toByteArray())
+        else:
+            self.room.sendAll(Identifiers.send.Use_Inventory_Consumable, ByteArray().writeInt(self.playerCode).writeShort(id).toByteArray())
+
+    def sendTradeResult(self, playerName, result):
+        self.sendPacket(Identifiers.send.Trade_Result, ByteArray().writeUTF(playerName).writeByte(result).toByteArray())
+
+    def sendTradeInvite(self, playerCode):
+        self.sendPacket(Identifiers.send.Trade_Invite, ByteArray().writeInt(playerCode).toByteArray())
+
+    def sendTradeStart(self, playerCode):
+        self.sendPacket(Identifiers.send.Trade_Start, ByteArray().writeInt(playerCode).toByteArray())
+
+    def tradeInvite(self, playerName):
+        player = self.room.clients.get(playerName)
+        if player != None and (not self.ipAddress == player.ipAddress or self.privLevel.includes(10) or player.privLevel.includes(10)) and self.privLevel.notin(0) and player.privLevel.notin(0):
+            if not player.isTrade:
+                if not player.room.name == self.room.name:
+                    self.sendTradeResult(playerName, 3)
+                elif player.isTrade:
+                    self.sendTradeResult(playerName, 0)
+                else:
+                    self.sendLangueMessage("", "$Demande_Envoyée")
+                    player.sendTradeInvite(self.playerCode)
+
+                self.tradeName = playerName
+                self.isTrade = True
+            else:
+                self.tradeName = playerName
+                self.isTrade = True
+                self.sendTradeStart(player.playerCode)
+                player.sendTradeStart(self.playerCode)
+
+    def cancelTrade(self, playerName):
+        player = self.room.clients.get(playerName)
+        if player != None:
+            self.tradeName = ""
+            self.isTrade = False
+            self.tradeConsumables = {}
+            self.tradeConfirm = False
+            player.tradeName = ""
+            player.isTrade = False
+            player.tradeConsumables = {}
+            player.tradeConfirm = False
+            player.sendTradeResult(self.playerName, 2)
+
+    def tradeAddConsumable(self, id, isAdd):
+        player = self.room.clients.get(self.tradeName)
+        if player != None and player.isTrade and player.tradeName == self.playerName and str(id) in self.server.inventoryConsumables and not "blockTrade" in self.server.inventoryConsumables[str(id)]:
+            if isAdd:
+                if id in self.tradeConsumables:
+                    self.tradeConsumables[id] += 1
+                else:
+                    self.tradeConsumables[id] = 1
+            else:
+                count = self.tradeConsumables[id] - 1
+                if count > 0:
+                    self.tradeConsumables[id] = count
+                else:
+                    del self.tradeConsumables[id]
+
+            player.sendPacket(Identifiers.send.Trade_Add_Consumable, ByteArray().writeBoolean(False).writeShort(id).writeBoolean(isAdd).writeByte(1).writeBoolean(False).toByteArray())
+            self.sendPacket(Identifiers.send.Trade_Add_Consumable, ByteArray().writeBoolean(True).writeShort(id).writeBoolean(isAdd).writeByte(1).writeBoolean(False).toByteArray())
+
+    def tradeResult(self, isAccept):
+        player = self.room.clients.get(self.tradeName)
+        if player != None and player.isTrade and player.tradeName == self.playerName:
+            self.tradeConfirm = isAccept
+            player.sendPacket(Identifiers.send.Trade_Confirm, ByteArray().writeBoolean(False).writeBoolean(isAccept).toByteArray())
+            self.sendPacket(Identifiers.send.Trade_Confirm, ByteArray().writeBoolean(True).writeBoolean(isAccept).toByteArray())
+            if self.tradeConfirm and player.tradeConfirm:
+                for consumable in player.tradeConsumables.items():
+                    if consumable[0] in self.playerConsumables:
+                        self.playerConsumables[consumable[0]] += consumable[1]
+                    else:
+                        self.playerConsumables[consumable[0]] = consumable[1]
+
+                    count = player.playerConsumables[consumable[0]] - consumable[1]
+                    if count <= 0:
+                        del player.playerConsumables[consumable[0]]
+                        if consumable[0] in player.equipedConsumables:
+                            player.equipedConsumables.remove(consumable[0])
+                    else:
+                        player.playerConsumables[consumable[0]] = count
+
+                for consumable in self.tradeConsumables.items():
+                    if consumable[0] in player.playerConsumables:
+                        player.playerConsumables[consumable[0]] += consumable[1]
+                    else:
+                        player.playerConsumables[consumable[0]] = consumable[1]
+
+                    count = self.playerConsumables[consumable[0]] - consumable[1]
+                    if count <= 0:
+                        del self.playerConsumables[consumable[0]]
+                        if consumable[0] in self.equipedConsumables:
+                            self.equipedConsumables.remove(consumable[0])
+                    else:
+                        self.playerConsumables[consumable[0]] = count
+
+                player.tradeName = ""
+                player.isTrade = False
+                player.tradeConsumables = {}
+                player.tradeConfirm = False
+                player.sendPacket(Identifiers.send.Trade_Close)
+                player.sendInventoryConsumables()
+                self.tradeName = ""
+                self.isTrade = False
+                self.tradeConsumables = {}
+                self.tradeConfirm = False
+                self.sendPacket(Identifiers.send.Trade_Close)
+                self.sendInventoryConsumables()
+
+    def sendGiveConsumables(self, id, amount=80, limit=80):
+        self.sendAnimZelda(4, id)
+        self.sendNewConsumable(id, amount)
+        amount, limit = int(amount), int(limit)
+        sum = (self.playerConsumables[id] if id in self.playerConsumables else 0) + amount
+        if limit != -1 and sum > limit: sum = limit
+        if id in self.playerConsumables:
+            self.playerConsumables[id] = sum
+            self.updateInventoryConsumable(id, sum)
+        else:
+            self.playerConsumables[id] = sum
+            self.updateInventoryConsumable(id, sum)
+
+    def delPlayerConsumable(self, id, amount=1):
+        try:
+            self.playerConsumables[id] -= 1
+        except:
+            del self.playerConsumables[id]
+
+    def sendNewConsumable(self, consumable, count):
+        self.sendPacket(Identifiers.send.New_Consumable, ByteArray().writeByte(0).writeShort(consumable).writeShort(count).toByteArray())
+
+    def getFullItemID(self, category, itemID):
+        return itemID + 10000 + 1000 * category if (itemID >= 100) else itemID + 100 * category
+
+    def getSimpleItemID(self, category, itemID):
+        return itemID - 10000 - 1000 * category if (itemID >= 10000) else itemID - 100 * category
+
+    def getItemInfo(self, category, itemID):
+        test = self.server.shopListCheck
+        test = test[f'{category}|{itemID}']
+        return [category, itemID, 0, 1, 0, test[0], test[1], 0 if category == 22 else 20]
+    def sendNpcs(self):
+        npcs = self.server.npcs["NPC"]
+        for npc in npcs.items():
+            value = npc[1]
+            self.spawnNPC(npc[0], value[0], value[1], value[2], value[3], value[4], value[5])
+
+    def openNpcShop(self, npcName):
+        npcShop = self.server.npcs["Shop"][npcName]
+        self.lastNpc = npcName
+
+        data = ByteArray()
+        data.writeUTF(npcName)
+        data.writeByte(len(npcShop))
+
+        for item in npcShop:
+            type, id, amount, four, priceItem, priceAmount = item
+            if (type == 1 and id in self.shopBadges) or (type == 2 and id in self.shamanBadges) or (type == 3 and self.hasTitle(id)) or (type == 4 and id in self.playerConsumables and self.playerConsumables.get(id) + amount > 10000):
+                data.writeByte(2)
+            elif not priceItem in self.playerConsumables or self.playerConsumables.get(priceItem) < priceAmount:
+                data.writeByte(1)
+            else:
+                data.writeByte(0)
+
+            data.writeByte(type).writeShort(id).writeShort(amount).writeByte(four).writeShort(priceItem).writeShort(priceAmount).writeInt(0)
+        self.sendPacket(Identifiers.send.NPC_Shop, data.toByteArray())
+
+    def buyNPCItem(self, itemID):
+        itemID += 1
+        item = self.server.npcs["Shop"].get(self.lastNpc)[itemID]
+        type, id, amount, four, priceItem, priceAmount = item
+
+        if priceItem in self.playerConsumables and self.playerConsumables.get(priceItem) >= priceAmount:
+            count = self.playerConsumables.get(priceItem) - priceAmount
+            if count <= 0:
+                del self.playerConsumables[priceItem]
+            else:
+                self.playerConsumables[priceItem] = count
+
+            self.updateInventoryConsumable(priceItem, count)
+
+            if type == 1:
+                self.sendAnimZelda(3, id)
+                self.parseShop.sendUnlockedBadge(id)
+                self.shopBadges.append(id)
+
+            elif type == 2:
+                self.sendAnimZelda(6, id)
+                self.shamanBadges.append(id)
+
+            elif type == 3:
+                self.titleList.append(id + 0.1)
+                self.changeTitle(id)
+
+            elif type == 4:
+                self.addConsumable(id, amount)
+
+            self.openNpcShop(self.lastNpc)
+
+    def changeTitle(self, id):
+        self.titleStars = 1
+        self.titleNumber = id
+        self.sendUnlockedTitle(id, 1)
+        self.sendPacket(Identifiers.send.Change_Title, ByteArray().writeByte(self.gender).writeShort(self.titleNumber).toByteArray())
+
+    def addConsumable(self, id, amount):
+        self.sendNewConsumable(id, amount)
+        self.sendAnimZelda(4, id)
+        sum = amount + (self.playerConsumables.get(id) if id in self.playerConsumables else 0)
+        self.playerConsumables[id] = sum
+        self.updateInventoryConsumable(id, sum)
+
+    def hasTitle(self, titleID):
+        for title in self.titleList:
+            if int(title - (title % 1)) == titleID:
+                return True
+        return False
+
+    def duyuru(self, u, message, ftime=True, client=False, langue=False, tab=False):
+        if not ftime:
+            if client:
+                self.sendClientMessage(message, tab)
+            elif langue:
+                self.sendLangueMessage("", message)
+            else:
+                self.sendClientMessage(message)
+        self.server.loop.call_later(u, lambda: self.duyuru(u, message, False, client, langue, tab))
+
+    def useConsumable(self, consumableID):
+        if consumableID in self.playerConsumables and not self.isDead:
+            if str(consumableID) in self.server.inventoryConsumables:
+                obj = self.server.inventoryConsumables.get(str(consumableID))
+                if "launchObject" in obj and not self.room.isRacing and not self.room.isBootcamp and not self.room.isSurvivor and not self.room.isDefilante and not self.room.disablePhysicalConsumables:
+                    objectCode = obj["launchObject"]
+                    if objectCode == 11:
+                        self.room.objectID += 2
+                    self.sendPlaceObject(self.room.objectID if consumableID == 11 else 0, objectCode, self.posX + 28 if self.isFacingRight else self.posX - 28, self.posY, 0, 0 if consumableID == 11 or objectCode == 24 else 10 if self.isFacingRight else -10, -3, True, True)
+
+                if "pet" in obj:
+                    if self.pet != 0:
+                        return
+                    else:
+                        self.pet = obj["pet"]
+                        self.petEnd = Utils.getTime() + 3600
+                        self.room.sendAll(Identifiers.send.Pet, ByteArray().writeInt(self.playerCode).writeByte(self.pet).toByteArray())
+
+                if "fur" in obj:
+                    self.fur = obj["fur"]
+                    self.furEnd = Utils.getTime() + 3600
+
+                if "pencil" in obj:
+                    self.sendPacket(Identifiers.send.Crazzy_Packet, ByteArray().writeByte(1).writeShort(650).writeInt(int(obj["pencil"], 16)).toByteArray())
+                    self.drawingColor = int(obj["pencil"], 16)
+
+                if consumableID == 10:
+                    players = 0
+                    playerz = list(self.room.clients.values())
+                    for player in playerz:
+                        if players < 5 and player != self:
+                            if player.posX >= self.posX - 400 and player.posX <= self.posX + 400:
+                                if player.posY >= self.posY - 300 and player.posY <= self.posY + 300:
+                                    player.sendPlayerEmote(3, "", False, False)
+                                    players += 1
+
+                if consumableID == 11:
+                    self.room.newConsumableTimer(self.room.lastObjectID)
+                    self.isDead = True
+                    if not self.room.noAutoScore:
+                        self.playerScore += 1
+
+                    self.sendPlayerDied()
+                    self.room.checkChangeMap()
+
+                if consumableID == 21:
+                    self.sendPlayerEmote(12, "", False, False)
+
+                if consumableID == 28:
+                    self.parseSkill.sendBonfireSkill(self.posX, self.posY, 15)
+
+                if consumableID == 33:
+                    self.sendPlayerEmote(16, "", False, False)
+
+                if consumableID == 35:
+                    if len(self.shopBadges) == 0:
+                        return
+                    self.room.sendAll(Identifiers.send.Baloon_Badge, ByteArray().writeInt(self.playerCode).writeShort(random.choice(self.shopBadges)).toByteArray())
+
+                if consumableID == 800:
+                    self.shopCheeses += 100
+                    self.sendAnimZelda(2, 0)
+                    self.sendGiveCurrency(0, 100)
+
+                if consumableID == 801:
+                    self.shopFraises += 100
+                    self.sendAnimZelda(2, 2)
+
+                if consumableID == 2234:
+                    self.sendPlayerEmote(20, "", False, False)
+                    players = 0
+                    playerz = list(self.room.clients.values())
+                    for player in playerz:
+                        if players < 5 and player != self:
+                            if player.posX >= self.posX - 400 and player.posX <= self.posX + 400:
+                                if player.posY >= self.posY - 300 and player.posY <= self.posY + 300:
+                                    player.sendPlayerEmote(6, "", False, False)
+                                    players += 1
+
+                if consumableID == 2239:
+                    self.room.sendAll(Identifiers.send.Crazzy_Packet, ByteArray().writeByte(4).writeInt(self.playerCode).writeInt(self.shopCheeses).toByteArray())
+
+                if consumableID == 2246:
+                    self.sendPlayerEmote(24, "", False, False)
+
+                if consumableID == 2255:
+                    self.sendAnimZelda(7, "$De6", random.randint(0, 6))
+
+                if consumableID == 2259:
+                    self.room.sendAll(Identifiers.send.Crazzy_Packet, ByteArray().writeByte(5).writeInt(self.playerCode).writeShort(int(self.playTime // 86400)).writeByte(int(self.playTime // 3600) % 24).toByteArray())
+
+                if not "letter" in obj:
+                    count = self.playerConsumables[consumableID] - 1
+                    if count <= 0:
+                        del self.playerConsumables[consumableID]
+                    else:
+                        self.playerConsumables[consumableID] = count
+
+                    self.room.sendAll(Identifiers.send.Use_Inventory_Consumable, ByteArray().writeInt(self.playerCode).writeShort(consumableID).toByteArray())
+                    self.updateInventoryConsumable(consumableID, count)
+
+class Server(asyncio.Transport):
+    def __init__(self):
+
+        # Settings
+        self.miceName = Config.miceName
+        self.isDebug = Config.isDebug
+        self.adventureIMG = Config.adventureIMG
+        self.adventureID = Config.adventureID
+        self.serverURL = Config.serverURL.split(", ")
+        self.leastMice = Config.leastMice
+        self.initialCheeses = Config.initialCheeses
+        self.initialFraises = Config.initialFraises
+        self.initialShamanLevel = Config.initialShamanLevel
+        self.initialShamanExpNext = Config.initialShamanExpNext
+        self.OP = Config.OP.split(", ")
+        self.langs2 = [  [ "af", "za" ],  [ "am", "et" ],  [ "ar", "eg" ],  [ "be", "by" ],  [ "bi", "vu" ],  [ "bn", "bd" ],  [ "bs", "ba" ],  [ "ca", "ad" ],  [ "cs", "cz" ],  [ "da", "dk" ],  [ "dv", "mv" ],  [ "dz", "bt" ],  [ "el", "gr" ],  [ "en", "gb" ],  [ "et", "ee" ],  [ "fa", "ir" ],  [ "ga", "ie" ],  [ "he", "il" ],  [ "hi", "in" ],  [ "hy", "am" ],  [ "ja", "jp" ],  [ "ka", "ge" ],  [ "kk", "kz" ],  [ "kl", "gl" ],  [ "km", "kh" ],  [ "ko", "kr" ],  [ "ky", "kg" ],  [ "lb", "lu" ],  [ "lo", "la" ],  [ "mo", "md" ],  [ "ms", "my" ],  [ "my", "mm" ],  [ "na", "nr" ],  [ "ne", "np" ],  [ "ny", "mw" ],  [ "qu", "bo" ],  [ "rn", "bi" ],  [ "sl", "si" ],  [ "sm", "ws" ],  [ "sq", "al" ],  [ "sr", "rs" ],  [ "ss", "sz" ],  [ "st", "ls" ],  [ "su", "id" ],  [ "sv", "se" ],  [ "sw", "ke" ],  [ "ta", "lk" ],  [ "tg", "tj" ],  [ "ti", "er" ],  [ "tk", "tm" ],  [ "tl", "ph" ],  [ "tn", "bw" ],  [ "uk", "ua" ],  [ "ur", "pk" ],  [ "vi", "vn" ],  [ "wo", "sn" ],  [ "yo", "ng" ],  [ "zh", "hk" ] ]
+        self.languages = [  ["af", "Afrikaans", "za"],  ["az", "Azərbaycan dili", "az"],  ["id", "Bahasa Indonesia", "id"],  ["ms", "Bahasa Melayu", "my"],  ["bi", "Bislama", "vu"],  ["bs", "Bosanski jezik", "ba"],  ["ca", "Català", "ad"],  ["ny", "ChiCheŵa", "mw"],  ["da", "Dansk", "dk"],  ["de", "Deutsch", "de"],  ["et", "Eesti keel", "ee"],  ["na", "Ekakairũ Naoero", "nr"],  ["en", "English", "gb"],  ["es", "Español", "es"],  ["to", "Faka Tonga", "to"],  ["mg", "Fiteny malagasy", "mg"],  ["fr", "Français", "fr"],  ["sm", "Gagana fa'a Samoa", "ws"],  ["hr", "Hrvatski", "hr"],  ["it", "Italiano", "it"],  ["mh", "Kajin M̧ajeļ", "mh"],  ["kl", "Kalaallisut", "gl"],  ["rn", "KiRundi", "bi"],  ["rw", "Kinyarwanda", "rw"],  ["sw", "Kiswahili", "ke"],  ["ht", "Kreyòl ayisyen", "ht"],  ["lv", "Latviešu valoda", "lv"],  ["lt", "Lietuvių kalba", "lt"],  ["lb", "Lëtzebuergesch", "lu"],  ["hu", "Magyar", "hu"],  ["mt", "Malti", "mt"],  ["nl", "Nederlands", "nl"],  ["no", "Norsk", "no"],  ["uz", "O'zbek", "uz"],  ["pl", "Polski", "pl"],  ["pt", "Português", "pt"],  ["pt-br", "Português brasileiro", "br"],  ["ro", "Română", "ro"],  ["qu", "Runa Simi", "bo"],  ["st", "SeSotho", "ls"],  ["tn", "SeTswana", "bw"],  ["sq", "Shqip", "al"],  ["ss", "SiSwati", "sz"],  ["sk", "Slovenčina", "sk"],  ["sl", "Slovenščina", "si"],  ["so", "Soomaaliga", "so"],  ["fi", "Suomen kieli", "fi"],  ["sv", "Svenska", "se"],  ["tl", "Tagalog", "ph"],  ["vi", "Tiếng Việt", "vn"],  ["tr", "Türkçe", "tr"],  ["tk", "Türkmen", "tm"],  ["fj", "Vosa Vakaviti", "fj"],  ["wo", "Wollof", "sn"],  ["yo", "Yorùbá", "ng"],  ["is", "Íslenska", "is"],  ["cs", "Česky", "cz"],  ["el", "Ελληνικά", "gr"],  ["be", "Беларуская", "by"],  ["ky", "Кыргыз тили", "kg"],  ["mo", "Лимба молдовеняскэ", "md"],  ["mn", "Монгол", "mn"],  ["ru", "Русский язык", "ru"],  ["sr", "Српски језик", "rs"],  ["tg", "Тоҷикӣ", "tj"],  ["uk", "Українська мова", "ua"],  ["bg", "български език", "bg"],  ["kk", "Қазақ тілі", "kz"],  ["hy", "Հայերեն", "am"],  ["he", "עברית", "il"],  ["ur", "اردو", "pk"],  ["ar", "العربية", "eg"],  ["fa", "فارسی", "ir"],  ["dv", "ދިވެހި", "mv"],  ["ne", "नेपाली", "np"],  ["hi", "हिन्दी", "in"],  ["bn", "বাংলা", "bd"],  ["ta", "தமிழ்", "lk"],  ["th", "ไทย", "th"],  ["lo", "ພາສາລາວ", "la"],  ["dz", "རྫོང་ཁ", "bt"],  ["my", "ဗမာစာ", "mm"],  ["ka", "ქართული", "ge"],  ["ti", "ትግርኛ", "er"],  ["am", "አማርኛ", "et"],  ["km", "ភាសាខ្មែរ", "kh"],  ["cn", "中国语文", "cn"],  ["zh", "中國語文", "hk"],  ["ja", "日本語", "jp"],  ["ko", "한국어", "kr"] ]
+        self.languages = [  ["af", "Afrikaans", "za"],  ["az", "Azərbaycan dili", "az"],  ["id", "Bahasa Indonesia", "id"],  ["ms", "Bahasa Melayu", "my"],  ["bi", "Bislama", "vu"],  ["bs", "Bosanski jezik", "ba"],  ["ca", "Català", "ad"],  ["ny", "ChiCheŵa", "mw"],  ["da", "Dansk", "dk"],  ["de", "Deutsch", "de"],  ["et", "Eesti keel", "ee"],  ["na", "Ekakairũ Naoero", "nr"],  ["en", "English", "gb"],  ["es", "Español", "es"],  ["to", "Faka Tonga", "to"],  ["mg", "Fiteny malagasy", "mg"],  ["fr", "Français", "fr"],  ["sm", "Gagana fa'a Samoa", "ws"],  ["hr", "Hrvatski", "hr"],  ["it", "Italiano", "it"],  ["mh", "Kajin M̧ajeļ", "mh"],  ["kl", "Kalaallisut", "gl"],  ["rn", "KiRundi", "bi"],  ["rw", "Kinyarwanda", "rw"],  ["sw", "Kiswahili", "ke"],  ["ht", "Kreyòl ayisyen", "ht"],  ["lv", "Latviešu valoda", "lv"],  ["lt", "Lietuvių kalba", "lt"],  ["lb", "Lëtzebuergesch", "lu"],  ["hu", "Magyar", "hu"],  ["mt", "Malti", "mt"],  ["nl", "Nederlands", "nl"],  ["no", "Norsk", "no"],  ["uz", "O'zbek", "uz"],  ["pl", "Polski", "pl"],  ["pt", "Português", "pt"],  ["pt-br", "Português brasileiro", "br"],  ["ro", "Română", "ro"],  ["qu", "Runa Simi", "bo"],  ["st", "SeSotho", "ls"],  ["tn", "SeTswana", "bw"],  ["sq", "Shqip", "al"],  ["ss", "SiSwati", "sz"],  ["sk", "Slovenčina", "sk"],  ["sl", "Slovenščina", "si"],  ["so", "Soomaaliga", "so"],  ["fi", "Suomen kieli", "fi"],  ["sv", "Svenska", "se"],  ["tl", "Tagalog", "ph"],  ["vi", "Tiếng Việt", "vn"],  ["tr", "Türkçe", "tr"],  ["tk", "Türkmen", "tm"],  ["fj", "Vosa Vakaviti", "fj"],  ["wo", "Wollof", "sn"],  ["yo", "Yorùbá", "ng"],  ["is", "Íslenska", "is"],  ["cs", "Česky", "cz"],  ["el", "Ελληνικά", "gr"],  ["be", "Беларуская", "by"],  ["ky", "Кыргыз тили", "kg"],  ["mo", "Лимба молдовеняскэ", "md"],  ["mn", "Монгол", "mn"],  ["ru", "Русский язык", "ru"],  ["sr", "Српски језик", "rs"],  ["tg", "Тоҷикӣ", "tj"],  ["uk", "Українська мова", "ua"],  ["bg", "български език", "bg"],  ["kk", "Қазақ тілі", "kz"],  ["hy", "Հայերեն", "am"],  ["he", "עברית", "il"],  ["ur", "اردو", "pk"],  ["ar", "العربية", "eg"],  ["fa", "فارسی", "ir"],  ["dv", "ދިވެހި", "mv"],  ["ne", "नेपाली", "np"],  ["hi", "हिन्दी", "in"],  ["bn", "বাংলা", "bd"],  ["ta", "தமிழ்", "lk"],  ["th", "ไทย", "th"],  ["lo", "ພາສາລາວ", "la"],  ["dz", "རྫོང་ཁ", "bt"],  ["my", "ဗမာစာ", "mm"],  ["ka", "ქართული", "ge"],  ["ti", "ትግርኛ", "er"],  ["am", "አማርኛ", "et"],  ["km", "ភាសាខ្មែរ", "kh"],  ["cn", "中国语文", "cn"],  ["zh", "中國語文", "hk"],  ["ja", "日本語", "jp"],  ["ko", "한국어", "kr"] ]
+        self.languages = [  ["af", "Afrikaans", "za"],  ["az", "Azərbaycan dili", "az"],  ["id", "Bahasa Indonesia", "id"],  ["ms", "Bahasa Melayu", "my"],  ["bi", "Bislama", "vu"],  ["bs", "Bosanski jezik", "ba"],  ["ca", "Català", "ad"],  ["ny", "ChiCheŵa", "mw"],  ["da", "Dansk", "dk"],  ["de", "Deutsch", "de"],  ["et", "Eesti keel", "ee"],  ["na", "Ekakairũ Naoero", "nr"],  ["en", "English", "gb"],  ["es", "Español", "es"],  ["to", "Faka Tonga", "to"],  ["mg", "Fiteny malagasy", "mg"],  ["fr", "Français", "fr"],  ["sm", "Gagana fa'a Samoa", "ws"],  ["hr", "Hrvatski", "hr"],  ["it", "Italiano", "it"],  ["mh", "Kajin M̧ajeļ", "mh"],  ["kl", "Kalaallisut", "gl"],  ["rn", "KiRundi", "bi"],  ["rw", "Kinyarwanda", "rw"],  ["sw", "Kiswahili", "ke"],  ["ht", "Kreyòl ayisyen", "ht"],  ["lv", "Latviešu valoda", "lv"],  ["lt", "Lietuvių kalba", "lt"],  ["lb", "Lëtzebuergesch", "lu"],  ["hu", "Magyar", "hu"],  ["mt", "Malti", "mt"],  ["nl", "Nederlands", "nl"],  ["no", "Norsk", "no"],  ["uz", "O'zbek", "uz"],  ["pl", "Polski", "pl"],  ["pt", "Português", "pt"],  ["pt-br", "Português brasileiro", "br"],  ["ro", "Română", "ro"],  ["qu", "Runa Simi", "bo"],  ["st", "SeSotho", "ls"],  ["tn", "SeTswana", "bw"],  ["sq", "Shqip", "al"],  ["ss", "SiSwati", "sz"],  ["sk", "Slovenčina", "sk"],  ["sl", "Slovenščina", "si"],  ["so", "Soomaaliga", "so"],  ["fi", "Suomen kieli", "fi"],  ["sv", "Svenska", "se"],  ["tl", "Tagalog", "ph"],  ["vi", "Tiếng Việt", "vn"],  ["tr", "Türkçe", "tr"],  ["tk", "Türkmen", "tm"],  ["fj", "Vosa Vakaviti", "fj"],  ["wo", "Wollof", "sn"],  ["yo", "Yorùbá", "ng"],  ["is", "Íslenska", "is"],  ["cs", "Česky", "cz"],  ["el", "Ελληνικά", "gr"],  ["be", "Беларуская", "by"],  ["ky", "Кыргыз тили", "kg"],  ["mo", "Лимба молдовеняскэ", "md"],  ["mn", "Монгол", "mn"],  ["ru", "Русский язык", "ru"],  ["sr", "Српски језик", "rs"],  ["tg", "Тоҷикӣ", "tj"],  ["uk", "Українська мова", "ua"],  ["bg", "български език", "bg"],  ["kk", "Қазақ тілі", "kz"],  ["hy", "Հայերեն", "am"],  ["he", "עברית", "il"],  ["ur", "اردو", "pk"],  ["ar", "العربية", "eg"],  ["fa", "فارسی", "ir"],  ["dv", "ދިވެހި", "mv"],  ["ne", "नेपाली", "np"],  ["hi", "हिन्दी", "in"],  ["bn", "বাংলা", "bd"],  ["ta", "தமிழ்", "lk"],  ["th", "ไทย", "th"],  ["lo", "ພາສາລາວ", "la"],  ["dz", "རྫོང་ཁ", "bt"],  ["my", "ဗမာစာ", "mm"],  ["ka", "ქართული", "ge"],  ["ti", "ትግርኛ", "er"],  ["am", "አማርኛ", "et"],  ["km", "ភាសាខ្មែរ", "kh"],  ["cn", "中国语文", "cn"],  ["zh", "中國語文", "hk"],  ["ja", "日本語", "jp"],  ["ko", "한국어", "kr"] ]
+        self.languages = [  ["af", "Afrikaans", "za"],  ["az", "Azərbaycan dili", "az"],  ["id", "Bahasa Indonesia", "id"],  ["ms", "Bahasa Melayu", "my"],  ["bi", "Bislama", "vu"],  ["bs", "Bosanski jezik", "ba"],  ["ca", "Català", "ad"],  ["ny", "ChiCheŵa", "mw"],  ["da", "Dansk", "dk"],  ["de", "Deutsch", "de"],  ["et", "Eesti keel", "ee"],  ["na", "Ekakairũ Naoero", "nr"],  ["en", "English", "gb"],  ["es", "Español", "es"],  ["to", "Faka Tonga", "to"],  ["mg", "Fiteny malagasy", "mg"],  ["fr", "Français", "fr"],  ["sm", "Gagana fa'a Samoa", "ws"],  ["hr", "Hrvatski", "hr"],  ["it", "Italiano", "it"],  ["mh", "Kajin M̧ajeļ", "mh"],  ["kl", "Kalaallisut", "gl"],  ["rn", "KiRundi", "bi"],  ["rw", "Kinyarwanda", "rw"],  ["sw", "Kiswahili", "ke"],  ["ht", "Kreyòl ayisyen", "ht"],  ["lv", "Latviešu valoda", "lv"],  ["lt", "Lietuvių kalba", "lt"],  ["lb", "Lëtzebuergesch", "lu"],  ["hu", "Magyar", "hu"],  ["mt", "Malti", "mt"],  ["nl", "Nederlands", "nl"],  ["no", "Norsk", "no"],  ["uz", "O'zbek", "uz"],  ["pl", "Polski", "pl"],  ["pt", "Português", "pt"],  ["pt-br", "Português brasileiro", "br"],  ["ro", "Română", "ro"],  ["qu", "Runa Simi", "bo"],  ["st", "SeSotho", "ls"],  ["tn", "SeTswana", "bw"],  ["sq", "Shqip", "al"],  ["ss", "SiSwati", "sz"],  ["sk", "Slovenčina", "sk"],  ["sl", "Slovenščina", "si"],  ["so", "Soomaaliga", "so"],  ["fi", "Suomen kieli", "fi"],  ["sv", "Svenska", "se"],  ["tl", "Tagalog", "ph"],  ["vi", "Tiếng Việt", "vn"],  ["tr", "Türkçe", "tr"],  ["tk", "Türkmen", "tm"],  ["fj", "Vosa Vakaviti", "fj"],  ["wo", "Wollof", "sn"],  ["yo", "Yorùbá", "ng"],  ["is", "Íslenska", "is"],  ["cs", "Česky", "cz"],  ["el", "Ελληνικά", "gr"],  ["be", "Беларуская", "by"],  ["ky", "Кыргыз тили", "kg"],  ["mo", "Лимба молдовеняскэ", "md"],  ["mn", "Монгол", "mn"],  ["ru", "Русский язык", "ru"],  ["sr", "Српски језик", "rs"],  ["tg", "Тоҷикӣ", "tj"],  ["uk", "Українська мова", "ua"],  ["bg", "български език", "bg"],  ["kk", "Қазақ тілі", "kz"],  ["hy", "Հայերեն", "am"],  ["he", "עברית", "il"],  ["ur", "اردو", "pk"],  ["ar", "العربية", "eg"],  ["fa", "فارسی", "ir"],  ["dv", "ދިވެހި", "mv"],  ["ne", "नेपाली", "np"],  ["hi", "हिन्दी", "in"],  ["bn", "বাংলা", "bd"],  ["ta", "தமிழ்", "lk"],  ["th", "ไทย", "th"],  ["lo", "ພາສາລາວ", "la"],  ["dz", "རྫོང་ཁ", "bt"],  ["my", "ဗမာစာ", "mm"],  ["ka", "ქართული", "ge"],  ["ti", "ትግርኛ", "er"],  ["am", "አማርኛ", "et"],  ["km", "ភាសាខ្មែរ", "kh"],  ["cn", "中国语文", "cn"],  ["zh", "中國語文", "hk"],  ["ja", "日本語", "jp"],  ["ko", "한국어", "kr"] ]
+        self.languages = [  ["af", "Afrikaans", "za"],  ["az", "Azərbaycan dili", "az"],  ["id", "Bahasa Indonesia", "id"],  ["ms", "Bahasa Melayu", "my"],  ["bi", "Bislama", "vu"],  ["bs", "Bosanski jezik", "ba"],  ["ca", "Català", "ad"],  ["ny", "ChiCheŵa", "mw"],  ["da", "Dansk", "dk"],  ["de", "Deutsch", "de"],  ["et", "Eesti keel", "ee"],  ["na", "Ekakairũ Naoero", "nr"],  ["en", "English", "gb"],  ["es", "Español", "es"],  ["to", "Faka Tonga", "to"],  ["mg", "Fiteny malagasy", "mg"],  ["fr", "Français", "fr"],  ["sm", "Gagana fa'a Samoa", "ws"],  ["hr", "Hrvatski", "hr"],  ["it", "Italiano", "it"],  ["mh", "Kajin M̧ajeļ", "mh"],  ["kl", "Kalaallisut", "gl"],  ["rn", "KiRundi", "bi"],  ["rw", "Kinyarwanda", "rw"],  ["sw", "Kiswahili", "ke"],  ["ht", "Kreyòl ayisyen", "ht"],  ["lv", "Latviešu valoda", "lv"],  ["lt", "Lietuvių kalba", "lt"],  ["lb", "Lëtzebuergesch", "lu"],  ["hu", "Magyar", "hu"],  ["mt", "Malti", "mt"],  ["nl", "Nederlands", "nl"],  ["no", "Norsk", "no"],  ["uz", "O'zbek", "uz"],  ["pl", "Polski", "pl"],  ["pt", "Português", "pt"],  ["pt-br", "Português brasileiro", "br"],  ["ro", "Română", "ro"],  ["qu", "Runa Simi", "bo"],  ["st", "SeSotho", "ls"],  ["tn", "SeTswana", "bw"],  ["sq", "Shqip", "al"],  ["ss", "SiSwati", "sz"],  ["sk", "Slovenčina", "sk"],  ["sl", "Slovenščina", "si"],  ["so", "Soomaaliga", "so"],  ["fi", "Suomen kieli", "fi"],  ["sv", "Svenska", "se"],  ["tl", "Tagalog", "ph"],  ["vi", "Tiếng Việt", "vn"],  ["tr", "Türkçe", "tr"],  ["tk", "Türkmen", "tm"],  ["fj", "Vosa Vakaviti", "fj"],  ["wo", "Wollof", "sn"],  ["yo", "Yorùbá", "ng"],  ["is", "Íslenska", "is"],  ["cs", "Česky", "cz"],  ["el", "Ελληνικά", "gr"],  ["be", "Беларуская", "by"],  ["ky", "Кыргыз тили", "kg"],  ["mo", "Лимба молдовеняскэ", "md"],  ["mn", "Монгол", "mn"],  ["ru", "Русский язык", "ru"],  ["sr", "Српски језик", "rs"],  ["tg", "Тоҷикӣ", "tj"],  ["uk", "Українська мова", "ua"],  ["bg", "български език", "bg"],  ["kk", "Қазақ тілі", "kz"],  ["hy", "Հայերեն", "am"],  ["he", "עברית", "il"],  ["ur", "اردو", "pk"],  ["ar", "العربية", "eg"],  ["fa", "فارسی", "ir"],  ["dv", "ދިވެހި", "mv"],  ["ne", "नेपाली", "np"],  ["hi", "हिन्दी", "in"],  ["bn", "বাংলা", "bd"],  ["ta", "தமிழ்", "lk"],  ["th", "ไทย", "th"],  ["lo", "ພາສາລາວ", "la"],  ["dz", "རྫོང་ཁ", "bt"],  ["my", "ဗမာစာ", "mm"],  ["ka", "ქართული", "ge"],  ["ti", "ትግርኛ", "er"],  ["am", "አማርኛ", "et"],  ["km", "ភាសាខ្មែរ", "kh"],  ["cn", "中国语文", "cn"],  ["zh", "中國語文", "hk"],  ["ja", "日本語", "jp"],  ["ko", "한국어", "kr"] ]
 
 
     def sendInventoryConsumables(self):
