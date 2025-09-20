@@ -7,6 +7,7 @@ sys.dont_write_bytecode = True
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
 
 import modules as module
+from modules.Others import Others
 
 # Imports Components
 from utils import *
@@ -276,7 +277,7 @@ class Client:
         self.parsePackets = ParsePackets(self, self.server)
         from modules.ParseCommands import ParseCommands
         self.parseCommands = ParseCommands(self, self.server)
-        self.others = module.Others(self)
+        self.others = Others(self)
         self.missions = module.Missions(self, self.server)
 
         if self.ipAddress != "127.0.0.1":
