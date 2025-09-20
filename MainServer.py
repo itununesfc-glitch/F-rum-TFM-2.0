@@ -396,8 +396,14 @@ class Client:
             if (C == Identifiers.recv.Informations.C and CC == Identifiers.recv.Informations.Correct_Version) and not (self.isClosed):
                 version, lang, ckey = packet.readShort(), packet.readUTF(), packet.readUTF()
 
+                # Debug: log client vs server values before comparison
+                try:
+                    print("[%s] [DEBUG] Client sent version=%s ckey=%s | Server expects Version=%s CKEY=%s" % (time.strftime("%H:%M:%S"), version, ckey, getattr(self.server, 'Version', None), getattr(self.server, 'CKEY', None)))
+                except Exception:
+                    print("[%s] [DEBUG] Failed to print version/ckey debug info" % time.strftime("%H:%M:%S"))
+
                 if not ckey == self.server.CKEY or version != self.server.Version:
-                    print("[%s] [WARN] Invalid version or CKey (%s, %s)" %(time.strftime("%H:%M:%S"), version, ckey))
+                    print("[%s] [WARN] Invalid version or CKey (client: %s, %s | server: %s, %s)" %(time.strftime("%H:%M:%S"), version, ckey, getattr(self.server, 'Version', None), getattr(self.server, 'CKEY', None)))
                     self.transport.close()
                 else:
                     self.validatingVersion = True
