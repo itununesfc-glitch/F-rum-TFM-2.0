@@ -81,7 +81,7 @@ DATABASES = {
         "NAME": "transformice",  # Nome do banco de dados MySQL
         "USER": "root",     # Usuário do MySQL
     "PASSWORD": "", # Senha do MySQL
-    "HOST": "192.168.18.41", # IP local do MySQL (XAMPP)
+    "HOST": "127.0.0.1", # IP local do MySQL (XAMPP)
     "PORT": "3306",      # Porta padrão do MySQL
     }
 }
