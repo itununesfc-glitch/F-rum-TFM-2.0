@@ -2179,6 +2179,11 @@ class Server(asyncio.Transport):
     def parseFunctions(self):
         # SWF
         data = self.parseSWF
+        # DEBUG: registrar os dados carregados do infoSWF.json
+        try:
+            print(f"[DEBUG] parseSWF data loaded: {data}")
+        except Exception as _e:
+            print(f"[DEBUG] Failed to print parseSWF data: {_e}")
         self.CKEY = data["key"]
         self.Version = data["version"]
 
