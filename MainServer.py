@@ -250,9 +250,9 @@ class Client:
 
     def data_received(self, data):
         if data == b'<policy-file-request/>\x00':
-            self.transport.write(b'<cross-domain-policy><allow-access-from domain=\"*\" to-ports=\"*\"/></cross-domain-policy>\x00')
-            self.transport.close()
+            self.transport.write(b'<cross-domain-policy><allow-access-from domain="*" to-ports="*"/></cross-domain-policy>\x00')
             return
+        self.transport.close()
             
         for i in range(5):
             if not data[i] & 128:
@@ -289,6 +289,7 @@ class Client:
             self.realCountry = d["country_code"]
             self.realCity = d["city"]
         else:
+            pass
             self.realCountry = "XX"
             self.realCity = "Localhost"
         
@@ -414,13 +415,14 @@ class Client:
                     self.server.sendStaffMessage(7, "<BL>[<R>ERROR<BL>] The player <R>%s found an error in system." %(self.playerName))
 
     def loginPlayer(self, playerName, password, startRoom):
+        print(f"[DEBUG] Iniciando loginPlayer: playerName={playerName}, isGuest={getattr(self, 'isGuest', False)}")
         playerName = "Souris" if playerName == "" else playerName
         self.mouseName = playerName
         if password == "":
             playerName = self.server.checkAlreadyExistingGuest("*" + (playerName[0].isdigit() or len(playerName) > 12 or len(playerName) < 3 or "Souris" if "+" in playerName else playerName))
             startRoom = "\x03[Tutorial] %s" %(playerName)
             self.isGuest = True
-
+            print(f"[DEBUG] Após verificação de guest: playerName={playerName}, isGuest={getattr(self, 'isGuest', False)}")
         elif "@" in playerName:
             if playerName.lower() in self.server.usersByEmail:
                 usersList = self.server.usersByEmail[playerName.lower()]
@@ -428,20 +430,25 @@ class Client:
                     playerName = usersList[0]
                 else:
                     self.sendPacket(Identifiers.send.Login_Result, ByteArray().writeByte(11).writeUTF("¤".join(usersList)).writeUTF("").toByteArray())
+                    print(f"[DEBUG] Após verificação de email: playerName={playerName}, isGuest={getattr(self, 'isGuest', False)}")
                     return
             else:
                 self.sendPacket(Identifiers.send.Login_Result, ByteArray().writeByte(2).writeUTF(playerName).writeUTF("").toByteArray())
+                print(f"[DEBUG] Após verificação de email: playerName={playerName}, isGuest={getattr(self, 'isGuest', False)}")
                 return
 
         playerTag = ""
         if "#" in playerName and not "@" in playerName and not self.isGuest:
             playerName, playerTag = playerName.split("#")
+        print(f"[DEBUG] playerTag={playerTag}")
 
+        print(f"[DEBUG] Verificando banimento permanente: {playerName} em {self.server.userPermaBanCache}")
         if not self.isGuest and playerName in self.server.userPermaBanCache:
             self.sendPacket(Identifiers.old.send.Player_Ban_Login, [self.server.getPermBanInfo(playerName)])
             self.transport.close()
             return
 
+        print(f"[DEBUG] Verificando banimento temporário: {playerName}")
         if not self.isGuest:
             banInfo = self.server.getTempBanInfo(playerName)
             timeCalc = Utils.getHoursDiff(banInfo[1])
@@ -452,14 +459,18 @@ class Client:
                 self.transport.close()
                 return
 
+        print(f"[DEBUG] Verificando se já está conectado: {playerName}")
         if self.server.checkConnectedAccount(playerName):
             self.sendPacket(Identifiers.send.Login_Result, ByteArray().writeByte(1).writeUTF(playerName + ("" if playerTag == "" else ("#" + playerTag))).writeUTF("").toByteArray())
         else:
             gifts, messages = "", ""
             if not self.isGuest and not playerName == "":
+                print(f"[DEBUG] Tentando autenticar no banco: playerName={playerName}, password={password}")
+                from MainServer import Cursor
                 Cursor.execute("select * from Users where Username = %s and Password = %s", [playerName, password])
                 rs = Cursor.fetchone()
                 if rs:
+                    print(f"[DEBUG] Usuário autenticado com sucesso: {playerName}")
                     self.playerID = rs[2]
                     self.emailAddress = rs[3]
                     self.privLevel = PrivLevel(rs[4])
@@ -477,6 +488,8 @@ class Client:
                     self.shopItems = rs[16]
                     self.shamanItems = rs[17]
                     self.clothes = list(map(str, filter(None, rs[18].split("|"))))
+                else:
+                    print(f"[DEBUG] Falha na autenticação SQL para: {playerName}")
                     self.playerLook = rs[19]
                     self.shamanLook = rs[20]
                     self.mouseColor = rs[21]
@@ -540,9 +553,8 @@ class Client:
                     verifed = rs[66]
                     if verifed == None or verifed == '' or verifed == "": verifed = 0
                     self.verifed = int(verifed) != 0
-                else:
-                    self.server.loop.call_later(10, lambda: self.sendPacket(Identifiers.send.Login_Result, ByteArray().writeByte(2).writeUTF(playerName + ("" if playerTag == "" else ("#" + playerTag))).writeUTF("").toByteArray()))
-                    return
+                self.server.loop.call_later(10, lambda: self.sendPacket(Identifiers.send.Login_Result, ByteArray().writeByte(2).writeUTF(playerName + ("" if playerTag == "" else ("#" + playerTag))).writeUTF("").toByteArray()))
+                return
 
             if self.privLevel is None:
                 self.privLevel = PrivLevel("1")
