@@ -15,6 +15,12 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.conf import settings
 from urllib.parse import urlencode
+import requests
+from jose import jwt
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 # Simple stubs to start OAuth flow with Google. These are intentionally
@@ -56,9 +62,64 @@ def google_callback(request):
 	code = request.GET.get('code')
 	if not code:
 		return JsonResponse({'error': 'no_code', 'detail': 'Missing code in callback.'}, status=400)
+	# Exchange the code for tokens at Google's token endpoint
+	token_url = 'https://oauth2.googleapis.com/token'
+	client_id = getattr(settings, 'GOOGLE_CLIENT_ID', None)
+	client_secret = getattr(settings, 'GOOGLE_CLIENT_SECRET', None)
+	redirect_uri = getattr(settings, 'GOOGLE_REDIRECT_URI', None)
 
-	# In a real implementation you'd exchange the code for tokens here.
-	return JsonResponse({'status': 'ok', 'message': 'Received code (stub).', 'code': code})
+	if not client_id or not client_secret or not redirect_uri:
+		return JsonResponse({'error': 'google_not_configured', 'detail': 'Configure GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET and GOOGLE_REDIRECT_URI in settings.'}, status=400)
+
+	data = {
+		'code': code,
+		'client_id': client_id,
+		'client_secret': client_secret,
+		'redirect_uri': redirect_uri,
+		'grant_type': 'authorization_code'
+	}
+
+	resp = requests.post(token_url, data=data, timeout=10)
+	if resp.status_code != 200:
+		return JsonResponse({'error': 'token_exchange_failed', 'detail': resp.text}, status=400)
+
+	token_data = resp.json()
+	id_token = token_data.get('id_token')
+	access_token = token_data.get('access_token')
+
+	if not id_token:
+		return JsonResponse({'error': 'no_id_token', 'detail': 'Google did not return id_token.'}, status=400)
+
+	# Decode/validate ID token (basic validation)
+	try:
+		# NOTE: In production you should verify signature and issuer/aud properly.
+		decoded = jwt.get_unverified_claims(id_token)
+	except Exception as e:
+		return JsonResponse({'error': 'invalid_id_token', 'detail': str(e)}, status=400)
+
+	email = decoded.get('email')
+	email_verified = decoded.get('email_verified', False)
+	name = decoded.get('name') or decoded.get('given_name')
+
+	if not email:
+		return JsonResponse({'error': 'no_email', 'detail': 'ID token does not contain email.'}, status=400)
+
+	# Create or update user
+	user, created = User.objects.get_or_create(username=email, defaults={'email': email, 'first_name': name or ''})
+	if not created:
+		# Optionally update fields
+		updated = False
+		if user.email != email:
+			user.email = email
+			updated = True
+		if name and user.first_name != name:
+			user.first_name = name
+			updated = True
+		if updated:
+			user.save()
+
+	# Here you would create a session or return a token for the app
+	return JsonResponse({'status': 'ok', 'message': 'User authenticated via Google (stub).', 'email': email, 'created': created})
 
 
 # Create your views here.
