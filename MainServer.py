@@ -1,6 +1,14 @@
 #coding: utf-8
-import os, sys, json, time, random, sqlite3, pymysql, traceback, zlib, asyncio, urllib.request
-from discord_webhook import DiscordWebhook
+import os, sys, json, time, random, sqlite3, traceback, zlib, asyncio, urllib.request
+try:
+    import pymysql
+except Exception:
+    pymysql = None
+
+try:
+    from discord_webhook import DiscordWebhook
+except Exception:
+    DiscordWebhook = None
 
 # Others
 sys.dont_write_bytecode = True
@@ -62,6 +70,23 @@ class Client:
         # outros flags/containers comuns
         self.isAdmin = False
         self.isMod = False
+
+    def connection_made(self, transport):
+        """
+        Called by asyncio when a connection is made. Store the transport so
+        other methods can use it. This implements the minimal Protocol API
+        expected by ProactorEventLoop on Windows.
+        """
+        self.transport = transport
+        # Try to extract peername/ip address if available
+        try:
+            peer = transport.get_extra_info('peername')
+            if peer:
+                # peer can be (ip, port) or a tuple depending on AF
+                self.ipAddress = peer[0]
+        except Exception:
+            # best-effort, don't crash here
+            self.ipAddress = getattr(self, 'ipAddress', None)
 
     # ...existing code...
     def loginPlayer(self, playerName, password, startRoom):

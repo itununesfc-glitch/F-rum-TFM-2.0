@@ -1,26 +1,26 @@
 from rest_framework import viewsets, permissions
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
-
-class PostViewSet(viewsets.ModelViewSet):
-	queryset = Post.objects.all().order_by('-created_at')
-	serializer_class = PostSerializer
-	permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-class CommentViewSet(viewsets.ModelViewSet):
-	queryset = Comment.objects.all().order_by('-created_at')
-	serializer_class = CommentSerializer
-	permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.conf import settings
 from urllib.parse import urlencode
-import requests
-from jose import jwt
-from django.contrib.auth import get_user_model
 
+try:
+	import requests
+except Exception:
+	requests = None
 
-User = get_user_model()
+try:
+	from jose import jwt
+except Exception:
+	jwt = None
+
+try:
+	from django.contrib.auth import get_user_model
+	User = get_user_model()
+except Exception:
+	User = None
 
 
 # Simple stubs to start OAuth flow with Google. These are intentionally
