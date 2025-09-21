@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "/workspaces/ForumJEWELS/.venv/bin/python",
+    "python.analysis.extraPaths": ["/workspaces/ForumJEWELS"],
+    "python.analysis.diagnosticMode": "workspace"
+}
