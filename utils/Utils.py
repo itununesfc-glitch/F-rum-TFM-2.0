@@ -74,11 +74,16 @@ class Utils:
     @staticmethod
     def getYoutubeID(url):
         matcher = re.compile(".*(?:youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=)([^#\\&\\?]*).*").match(url)
+        matcher = re.compile(r".*(?:youtu\.be/|v/|u/\w/|embed/|watch\?v=)([^#\&\?]*).*").match(url)
         return matcher.group(1) if matcher else None
 
     @staticmethod
     def Duration(duration):
-        time = re.compile('P''(?:(?P<years>\d+)Y)?''(?:(?P<months>\d+)M)?''(?:(?P<weeks>\d+)W)?''(?:(?P<days>\d+)D)?''(?:T''(?:(?P<hours>\d+)H)?''(?:(?P<minutes>\d+)M)?''(?:(?P<seconds>\d+)S)?'')?').match(duration).groupdict()
-        for key, count in time.items():
-            time[key] = 0 if count is None else time[key]
-        return (int(time["weeks"]) * 7 * 24 * 60 * 60) + (int(time["days"]) * 24 * 60 * 60) + (int(time["hours"]) * 60 * 60) + (int(time["minutes"]) * 60) + (int(time["seconds"]) - 1)
+        pattern = re.compile(r"P(?:(?P<years>\d+)Y)?(?:(?P<months>\d+)M)?(?:(?P<weeks>\d+)W)?(?:(?P<days>\d+)D)?(?:T(?:(?P<hours>\d+)H)?(?:(?P<minutes>\d+)M)?(?:(?P<seconds>\d+)S)?)?")
+        m = pattern.match(duration)
+        if not m:
+            return 0
+        parts = m.groupdict()
+        for k in parts:
+            parts[k] = 0 if parts[k] is None else int(parts[k])
+        return (parts.get("weeks", 0) * 7 * 24 * 60 * 60) + (parts.get("days", 0) * 24 * 60 * 60) + (parts.get("hours", 0) * 60 * 60) + (parts.get("minutes", 0) * 60) + max(0, parts.get("seconds", 0) - 1)

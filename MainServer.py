@@ -35,7 +35,9 @@ import string
 import re
 from urllib.request import urlopen
 
-loop = asyncio.get_event_loop()
+# Create an explicit event loop for compatibility with modern Python
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
 # Library
 from datetime import datetime, timedelta
@@ -50,26 +52,209 @@ CursorMaps = None
 
 class Client:
 
-    def __init__(self, transport=None, server=None):
-        # transporte / servidor associados
-        self.transport = transport
-        self.server = server
-
-        # atributos defaults essenciais para evitar AttributeError durante fluxo de salas/mapChange
-        self.isHidden = False
-        self.isGuest = False
-        self.playerSkills = {}
-        self.playerTag = ""
-        self.players = {}
-        self.Cursor = None
-        self.PlayerID = None
-        self.loginTime = None
-        self.room = None
+    def __init__(self, server):
+        # String
+        self.langue = ""
+        self.loop = loop
+        self.packages = ByteArray()
+        self.roomName = ""
+        self.marriage = ""
+        self.shopItems = ""
+        self.tribeName = ""
+        self.mouseName = ""
+        self.nameColor = ""
+        self.tradeName = ""
         self.playerName = ""
-        self.playerParams = {}
-        # outros flags/containers comuns
-        self.isAdmin = False
-        self.isMod = False
+        self.playerTag = ""
+        self.cacheTag = ""
+        self.lastNpc = ""
+        self.shamanItems = ""
+        self.lastMessage = ""
+        self.tribeMessage = ""
+        self.tribeRanks = ""
+        self.tempMouseColor = ""
+        self.silenceMessage = ""
+        self.afkkilltimer = None
+        self.currentCaptcha = ""
+        self.mouseColor = "78583a"
+        self.shamanColor = "95d9d6"
+        self.profileColor = ""
+        self.playerLook = "1;0,0,0,0,0,0,0,0,0"
+        self.shamanLook = "0,0,0,0,0,0,0,0,0,0"
+        self.realCountry = ""
+        self.modoPwetLanguage = "ALL"
+
+        # Integer
+        self.pet = 0
+        self.posX = 0
+        self.posY = 0
+        self.velX = 0
+        self.velY = 0
+        self.fur = 0
+        self.furEnd = 0
+        self.gender = 0
+        self.verifed = False
+        self.petEnd = 0
+        self.lastOn = 0
+        self.regDate = 0
+        self.langueID = 0
+        self.playerID = 0
+        self.banHours = 0
+        self.iceCount = 2
+        self.shamanExp = 0
+        self.tribeCode = 0
+        self.tribeRank = 0
+        self.tribeChat = 0
+        self.loginTime = 0
+        self.hazelnuts = 0
+        self.playTime = 0
+        self.tribulleID = 0
+        self.titleStars = 0
+        self.firstCount = 0
+        self.playerCode = 0
+        self.shamanType = 0
+        self.tribeHouse = 0
+        self.tribeJoined = 0
+        self.playerKarma = 0
+        self.lastTopicID = 0
+        self.silenceType = 0
+        self.vipTime = 0
+        self.playerScore = 0
+        self.titleNumber = 0
+        self.cheeseCount = 0
+        self.colorProfileCC = 0
+        self.shopFraises = 0
+        self.shamanSaves = 0
+        self.shamanLevel = 1
+        self.lastGameMode = 0
+        self.bubblesCount = 0
+        self.currentPlace = 0
+        self.chec = 0
+        self.survivorDeath = 0
+        self.shamanCheeses = 0
+        self.hardModeSaves = 0
+        self.bootcampCount = 0
+        self.lastReportID = 0
+        self.shopCheeses = 100
+        self.shamanExpNext = 32
+        self.ambulanceCount = 0
+        self.defilantePoints = 0
+        self.divineModeSaves = 0
+        self.equipedShamanBadge = 0
+        self.playerStartTimeMillis = 0
+        self.wrongLoginAttempts = 0
+        self.lastPacketID = random.randint(0, 99)
+        self.authKey = 0
+
+        # Bool
+        self.isAfk = False
+        self.isDead = False
+        self.isMute = False
+        self.isCafe = False
+        self.isGuest = False
+        self.isVoted = False
+        self.isTrade = False
+        self.useTotem = False
+        self.isHidden = False
+        self.isClosed = False
+        self.isShaman = False
+        self.hasEnter = False
+        self.isSuspect = False
+        self.isVampire = False
+        self.isLuaAdmin = False
+        self.hasCheese = False
+        self.isJumping = False
+        self.resetTotem = False
+        self.canRespawn = False
+        self.enabledLua = False
+        self.isNewPlayer = False
+        self.isEnterRoom = False
+        self.tradeConfirm = False
+        self.canSkipMusic = False
+        self.isReloadCafe = False
+        self.isMovingLeft = False
+        self.isMovingRight = False
+        self.isFacingRight = False
+        self.isOpportunist = False
+        self.qualifiedVoted = False
+        self.desintegration = False
+        self.canShamanRespawn = False
+        self.validatingVersion = False
+        self.canRedistributeSkills = False
+        self.isVip = False
+        self.canUseSpawnAll = True
+        self.LucasPro = True
+        self.canUseCafe = True
+        self.canUseTribulle = True
+        self.luaadmin = False
+        self.isTribeOpen = False
+        self.isModoPwet = False
+        self.isModoPwetNotifications = False
+
+        # Others
+        self.Cursor = Cursor
+        self.CursorCafe = CursorCafe
+        self.CMDTime = time.time()
+        self.CAPTime = time.time()
+        self.CTBTime = time.time()
+        self.CHTTime = time.time()
+        self.LOGTime = time.time()
+        self.CRTTime = time.time()
+
+        # Nonetype
+        self.room = None
+        self.awakeTimer = None
+        self.skipMusicTimer = None
+        self.resSkillsTimer = None
+        self.spawnTimer = None
+        self.vipTimer = None
+        self.privLevel = None
+        self.server = server
+        self.lastping = False
+
+        # List
+        self.totem = [0, ""]
+        self.dailyMissions = [0, 0, 0, 0]
+        self.PInfo = [0, 0, 400]
+        self.tempTotem = [0, ""]
+        self.racingStats = [0] * 4
+        self.survivorStats = [0] * 4
+        self.defilanteStats = [0] * 3
+
+        self.voteBan = []
+        self.clothes = []
+        self.titleList = []
+        self.shopBadges = []
+        self.friendsList = []
+        self.tribeInvite = []
+        self.shamanBadges = []
+        self.ignoredsList = []
+        self.mulodromePos = []
+        self.shopTitleList = []
+        self.marriageInvite = []
+        self.firstTitleList = []
+        self.cheeseTitleList = []
+        self.shamanTitleList = []
+        self.bootcampTitleList = []
+        self.hardModeTitleList = []
+        self.equipedConsumables = []
+        self.ignoredTribeInvites = []
+        self.divineModeTitleList = []
+        self.specialTitleList = []
+        self.ignoredMarriageInvites = []
+        self.cloneData = [0, 0]
+        self.invitedTribeHouses = []
+
+        # Dict
+        self.playerSkills = {}
+        self.tradeConsumables = {}
+        self.playerMissions = {}
+        self.playerConsumables = {}
+        self.visuItems = {}
+        self.custom = []
+        # receive buffer for asyncio.Protocol.data_received framing
+        self._recv_buffer = bytearray()
+        self._recv_lock = False
 
     def connection_made(self, transport):
         """
@@ -87,6 +272,196 @@ class Client:
         except Exception:
             # best-effort, don't crash here
             self.ipAddress = getattr(self, 'ipAddress', None)
+
+    def data_received(self, data: bytes):
+        """
+        Buffer incoming data and decode varint length-prefixed frames.
+        Each frame format (from client to server): varint length, then
+        packet bytes where first three bytes are packetID, C, CC.
+        """
+        try:
+            # debug: log incoming raw data for troubleshooting
+            try:
+                peer = getattr(self, 'ipAddress', None)
+                print(f"[DEBUG] data_received from {peer}: {len(data)} bytes -> {data[:64]!r}")
+            except Exception:
+                pass
+            # policy file request (Flash) handling
+            if data == b'<policy-file-request/>\x00':
+                try:
+                    self.transport.write(b'<cross-domain-policy><allow-access-from domain="*" to-ports="*"/></cross-domain-policy>\x00')
+                except Exception:
+                    pass
+                try:
+                    self.transport.close()
+                except Exception:
+                    pass
+                return
+
+            self._recv_buffer.extend(data)
+
+            # loop extracting frames while possible
+            while True:
+                # need at least 1 byte to start varint decode
+                if not self._recv_buffer:
+                    break
+
+                # decode varint (7 bits per byte, continuation bit 0x80)
+                length = 0
+                shift = 0
+                varint_len = 0
+                for i, b in enumerate(self._recv_buffer):
+                    varint_len += 1
+                    length |= (b & 0x7F) << shift
+                    shift += 7
+                    if not (b & 0x80):
+                        break
+                    if varint_len >= 5:
+                        # too big, malformed
+                        raise ValueError('Malformed varint length')
+
+                # we didn't find a terminating byte yet
+                if varint_len == 0 or (varint_len <= len(self._recv_buffer) and (self._recv_buffer[varint_len-1] & 0x80)):
+                    # need more data
+                    break
+
+                header_and_payload_len = length
+
+                total_needed = varint_len + header_and_payload_len
+                if len(self._recv_buffer) < total_needed:
+                    # wait for more data
+                    break
+
+                # extract the packet bytes after varint
+                packet_bytes = bytes(self._recv_buffer[varint_len: total_needed])
+
+                # remove processed bytes from buffer
+                del self._recv_buffer[:total_needed]
+
+                # schedule parseString; parseString expects a ByteArray
+                try:
+                    from modules.ByteArray import ByteArray
+                    ba = ByteArray(packet_bytes)
+                    # ensure parseString runs in the event loop
+                    try:
+                        self.loop.create_task(self.parseString(ba))
+                    except Exception:
+                        # fallback to ensure_future
+                        asyncio.ensure_future(self.parseString(ba))
+                except Exception:
+                    # log but don't crash the connection
+                    try:
+                        import traceback
+                        traceback.print_exc()
+                    except Exception:
+                        pass
+
+        except Exception:
+            try:
+                import traceback
+                traceback.print_exc()
+            finally:
+                try:
+                    self.transport.close()
+                except Exception:
+                    pass
+
+    def eof_received(self):
+        # called when the other end half-closes the connection
+        try:
+            return None
+        except Exception:
+            return None
+
+    def connection_lost(self, exc):
+        # preserve existing cleanup logic where present further down;
+        # some code later in the class defines connection_lost with a different signature
+        # so this acts as a safe bridge to that logic if necessary
+        try:
+            # attempt to call the long connection_lost implementation if it exists
+            # (some versions of the file define connection_lost(self, args))
+            orig = getattr(self, 'connection_lost_impl', None)
+            if callable(orig):
+                try:
+                    orig(exc)
+                    return
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    async def parseString(self, packet):
+        # Based on reference implementation (Servidor Ori), with debug instrumentation
+        if getattr(self, 'isClosed', False):
+            return
+
+        try:
+            packetID = packet.readByte()
+            C = packet.readByte()
+            CC = packet.readByte()
+        except Exception as _e:
+            print(f"[DEBUG] parseString: failed to read header: {_e}")
+            return
+
+        print(f"[DEBUG] parseString: packetID={packetID}, C={C}, CC={CC}")
+
+        if not getattr(self, 'validatingVersion', False):
+            # Expect Correct_Version during handshake
+            if (C == Identifiers.recv.Informations.C and CC == Identifiers.recv.Informations.Correct_Version) and not getattr(self, 'isClosed', False):
+                try:
+                    version = packet.readShort()
+                    lang = packet.readUTF()
+                    ckey = packet.readUTF()
+                except Exception as _e:
+                    print(f"[DEBUG] parseString: malformed handshake fields: {_e}")
+                    try:
+                        self.transport.close()
+                    except Exception:
+                        pass
+                    return
+
+                print(f"[DEBUG] parseString: handshake version={version}, lang={lang}, ckey={ckey}")
+                if not (ckey == self.server.CKEY and version == self.server.Version):
+                    print(f"[%s] [WARN] Invalid version or CKey (%s, %s)" % (time.strftime("%H:%M:%S"), version, ckey))
+                    try:
+                        self.transport.close()
+                    except Exception:
+                        pass
+                else:
+                    self.validatingVersion = True
+                    try:
+                        self.sendCorrectVersion(getattr(self, 'langueCode', 'en'))
+                        print("[DEBUG] parseString: sendCorrectVersion replied")
+                    except Exception as _e:
+                        print(f"[ERROR] parseString: sendCorrectVersion failed: {_e}")
+            else:
+                try:
+                    self.transport.close()
+                except Exception:
+                    pass
+            return
+
+        # Post-handshake: delegate to packet parser
+        try:
+            self.lastPacketID = packetID
+            print(f"[DEBUG] parseString: delegating packet to parsePackets (id={packetID})")
+            await self.parsePackets.parsePacket(packetID, C, CC, packet)
+            print(f"[DEBUG] parseString: parsePackets completed for id={packetID}")
+        except Exception:
+            try:
+                import traceback
+                with open("./include/SErros.log", "a") as f:
+                    traceback.print_exc(file=f)
+                    f.write("\n")
+                try:
+                    self.server.sendStaffMessage(7, "<BL>[<R>ERROR<BL>] The player <R>%s found an error in system." % (getattr(self, 'playerName', 'unknown')))
+                except Exception:
+                    pass
+            except Exception:
+                try:
+                    traceback.print_exc()
+                except Exception:
+                    pass
 
     # ...existing code...
     def loginPlayer(self, playerName, password, startRoom):
@@ -2089,9 +2464,10 @@ class Server(asyncio.Transport):
         start = time.time()
         self.loop = asyncio.get_event_loop()
         self.OnlineServer = datetime.today()
-        for port in [11801, 12801, 13801, 14801]:
-            coro = self.loop.create_server(lambda: Client(self), "0.0.0.0", port)
-            server = self.loop.run_until_complete(coro)
+        # Temporarily bind only to 11802 to avoid conflicts on other ports during testing.
+        # Revert this change after testing is complete.
+        coro = self.loop.create_server(lambda: Client(self), "0.0.0.0", 11802)
+        server = self.loop.run_until_complete(coro)
         print("[%s] %s serveur running." %(time.strftime("%H:%M:%S"), self.miceName))
         print(f"Server loaded in {time.time() - start}s")
         #self.BotDiscord = module.Bot(self)
@@ -2208,9 +2584,11 @@ class Server(asyncio.Transport):
         for rs in rrf:
             self.playersById[rs[3]] = rs[0]
             self.idsByPlayer[rs[0]] = rs[3]
-            if rs[1] not in self.usersByEmail:
-                self.usersByEmail[rs[1]] = []
-            self.usersByEmail[rs[1]].append(rs[0] + rs[2])
+            email = rs[1] or ""
+            tag = rs[2] or ""
+            if email not in self.usersByEmail:
+                self.usersByEmail[email] = []
+            self.usersByEmail[email].append(str(rs[0]) + tag)
 
     def parseShopList(self):
         shopData = self.parseFile("./include/files/shop.json", load=True)
@@ -2264,25 +2642,41 @@ class Server(asyncio.Transport):
             i += 1
 
         # DB
-        Cursor.execute("select ip from IPPermaBan")
-        rs = Cursor.fetchone()
-        if rs:
-            self.IPPermaBanCache.append(rs[0])
+        # Some optional tables may not exist in minimal test databases. Query
+        # each in a safe try/except so startup doesn't terminate with a
+        # ProgrammingError (table doesn't exist). Missing data is non-fatal;
+        # we simply leave the related cache lists empty.
+        try:
+            Cursor.execute("select ip from IPPermaBan")
+            rs = Cursor.fetchone()
+            if rs:
+                self.IPPermaBanCache.append(rs[0])
+        except Exception as _e:
+            print(f"[WARN] IPPermaBan query failed (ignored): {_e}")
 
-        Cursor.execute("select Username from UserPermaBan")
-        rs = Cursor.fetchone()
-        if rs:
-            self.userPermaBanCache.append(rs[0])
+        try:
+            Cursor.execute("select Username from UserPermaBan")
+            rs = Cursor.fetchone()
+            if rs:
+                self.userPermaBanCache.append(rs[0])
+        except Exception as _e:
+            print(f"[WARN] UserPermaBan query failed (ignored): {_e}")
 
-        Cursor.execute("select Username from UserTempBan")
-        rs = Cursor.fetchone()
-        if rs:
-            self.userTempBanCache.append(rs[0])
+        try:
+            Cursor.execute("select Username from UserTempBan")
+            rs = Cursor.fetchone()
+            if rs:
+                self.userTempBanCache.append(rs[0])
+        except Exception as _e:
+            print(f"[WARN] UserTempBan query failed (ignored): {_e}")
 
-        Cursor.execute("select Username from UserTempMute")
-        rs = Cursor.fetchone()
-        if rs:
-            self.userMuteCache.append(rs[0])
+        try:
+            Cursor.execute("select Username from UserTempMute")
+            rs = Cursor.fetchone()
+            if rs:
+                self.userMuteCache.append(rs[0])
+        except Exception as _e:
+            print(f"[WARN] UserTempMute query failed (ignored): {_e}")
 
     def parseFile(self, directory, load=False):
         with open(directory, "r") as f:
@@ -3878,12 +4272,166 @@ def invertDict(_dict):
     return {v: k for k, v in _dict.items()}
     
 if __name__ == "__main__":
-    # Connection MySQL Players Database
+    # Connection MySQL Players Database (fallback to SQLite when MySQL unavailable)
     Database, Cursor = None, None
-    Database = pymysql.connect(host="127.0.0.1", user="root", password="", database="transformice")
-    Database.isolation_level = None 
-    Cursor = Database.cursor()
-    Database.autocommit(True)
+    try:
+        # Read MySQL connection from environment (allows local container use)
+        mysql_host = os.environ.get('MYSQL_HOST', '127.0.0.1')
+        mysql_port = int(os.environ.get('MYSQL_PORT', 3306))
+        mysql_user = os.environ.get('MYSQL_USER', 'root')
+        mysql_pass = os.environ.get('MYSQL_PASSWORD', '')
+        mysql_db = os.environ.get('MYSQL_DB', 'transformice')
+        if pymysql is None:
+            raise Exception("pymysql not installed")
+        Database = pymysql.connect(host=mysql_host, port=mysql_port, user=mysql_user, password=mysql_pass, database=mysql_db)
+        Database.isolation_level = None
+        Cursor = Database.cursor()
+        Database.autocommit(True)
+        print(f"[INFO] Connected to MySQL players database at {mysql_host}:{mysql_port}.")
+    except Exception as e:
+        print(f"[WARN] MySQL connection failed: {e!s}. Falling back to SQLite users database.")
+        # Use a local SQLite file as fallback for users data
+        try:
+            Database = sqlite3.connect("./database/Users.db", check_same_thread=False)
+            Database.text_factory = str
+            Database.isolation_level = None
+            Database.row_factory = sqlite3.Row
+            Cursor = Database.cursor()
+            # Ensure minimal Users table exists (best-effort schema)
+            Cursor.execute('''CREATE TABLE IF NOT EXISTS Users (
+                Username TEXT PRIMARY KEY,
+                Password TEXT,
+                PlayerID INTEGER,
+                Email TEXT,
+                PrivLevel INTEGER,
+                TitleNumber INTEGER,
+                FirstCount INTEGER,
+                CheeseCount INTEGER,
+                ShamanCheeses INTEGER,
+                ShopCheeses INTEGER,
+                ShopFraises INTEGER,
+                ShamanSaves INTEGER,
+                HardModeSaves INTEGER,
+                DivineModeSaves INTEGER,
+                BootcampCount INTEGER,
+                ShamanType INTEGER,
+                ShopItems TEXT,
+                ShamanItems TEXT,
+                Clothes TEXT,
+                PlayerLook TEXT,
+                ShamanLook TEXT,
+                MouseColor TEXT,
+                ShamanColor TEXT,
+                RegDate INTEGER,
+                ShopBadges TEXT,
+                CheeseTitleList TEXT,
+                FirstTitleList TEXT,
+                ShamanTitleList TEXT,
+                ShopTitleList TEXT,
+                BootcampTitleList TEXT,
+                HardModeTitleList TEXT,
+                DivineModeTitleList TEXT,
+                SpecialTitleList TEXT,
+                BanHours INTEGER,
+                ShamanLevel INTEGER,
+                ShamanExp INTEGER,
+                ShamanExpNext INTEGER,
+                PlayerSkills TEXT,
+                LastOn INTEGER,
+                FriendsList TEXT,
+                IgnoredsList TEXT,
+                Gender INTEGER,
+                Marriage INTEGER,
+                Gifts TEXT,
+                Messages TEXT,
+                SurvivorStats TEXT,
+                RacingStats TEXT,
+                DefilanteStats TEXT,
+                PlayerConsumables TEXT,
+                EquipedConsumables TEXT,
+                Pet INTEGER,
+                PetEnd INTEGER,
+                ShamanBadges TEXT,
+                EquipedShamanBadge INTEGER,
+                TotemCode INTEGER,
+                TotemText TEXT,
+                Custom TEXT,
+                TribeCode INTEGER,
+                TribeRank INTEGER,
+                TribeJoined INTEGER,
+                PlayerTag TEXT,
+                PlayTime INTEGER,
+                LoginTime INTEGER
+            )''')
+            Database.commit()
+            print("[INFO] SQLite users database ready at ./database/Users.db")
+            # Create minimal auxiliary tables expected by startup
+            try:
+                Cursor.execute('''CREATE TABLE IF NOT EXISTS IPPermaBan (
+                    ip TEXT PRIMARY KEY,
+                    modName TEXT,
+                    reason TEXT
+                )''')
+                Cursor.execute('''CREATE TABLE IF NOT EXISTS IPTempBan (
+                    ip TEXT PRIMARY KEY,
+                    endTime INTEGER
+                )''')
+                Cursor.execute('''CREATE TABLE IF NOT EXISTS TempBan (
+                    username TEXT PRIMARY KEY,
+                    modName TEXT,
+                    endTime INTEGER
+                )''')
+                Cursor.execute('''CREATE TABLE IF NOT EXISTS UserPermaBan (
+                    Username TEXT PRIMARY KEY,
+                    Reason TEXT,
+                    ModName TEXT
+                )''')
+                Cursor.execute('''CREATE TABLE IF NOT EXISTS UserTempBan (
+                    Username TEXT PRIMARY KEY,
+                    Reason TEXT,
+                    Time INTEGER
+                )''')
+                Cursor.execute('''CREATE TABLE IF NOT EXISTS UserTempMute (
+                    Username TEXT PRIMARY KEY,
+                    Time INTEGER,
+                    Reason TEXT
+                )''')
+                Database.commit()
+                # Ensure commonly-used Users columns exist (best-effort)
+                try:
+                    Cursor.execute("ALTER TABLE Users ADD COLUMN Tag TEXT")
+                except Exception:
+                    pass
+                try:
+                    Cursor.execute("ALTER TABLE Users ADD COLUMN Look TEXT")
+                except Exception:
+                    pass
+                try:
+                    Cursor.execute("ALTER TABLE Users ADD COLUMN Badges TEXT")
+                except Exception:
+                    pass
+                # Title lists and other array-like fields
+                for col in [
+                    'CheeseTitleList','FirstTitleList','ShamanTitleList','ShopTitleList',
+                    'BootcampTitleList','HardModeTitleList','DivineModeTitleList','SpecialTitleList']:
+                    try:
+                        Cursor.execute(f"ALTER TABLE Users ADD COLUMN {col} TEXT")
+                    except Exception:
+                        pass
+                try:
+                    Cursor.execute("ALTER TABLE Users ADD COLUMN VipTime INTEGER")
+                except Exception:
+                    pass
+                try:
+                    Cursor.execute("ALTER TABLE Users ADD COLUMN Tag TEXT")
+                except Exception:
+                    pass
+                Database.commit()
+            except Exception:
+                pass
+        except Exception as e2:
+            print(f"[ERROR] Failed to initialize fallback SQLite DB: {e2!s}")
+            raise
 
     # Connection SQLite Cafe Database
     DatabaseCafe, CursorCafe = None, None
